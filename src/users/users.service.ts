@@ -1,11 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from "@nestjs/common";
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import databaseConfig from '../configs/database.config';
+import { ConfigType } from "@nestjs/config";
+import { PrismaService } from "../database/prisma/prisma.service";
+import { User } from "./entities/user.entity";
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  // @Inject(databaseConfig.KEY) private dbConfig: ConfigType<typeof databaseConfig>,
+  constructor(private readonly prismaService: PrismaService) {}
+  create(createUserDto: CreateUserDto): string {
+    return `This action create user`;
   }
 
   findAll() {

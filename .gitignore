@@ -12,9 +12,9 @@ yarn-error.log*
 lerna-debug.log*
 
 # Env files
-src/config/env/.development.env
-src/config/env/.stage.env
-src/config/env/.production.env
+src/configs/env/.development.env
+src/configs/env/.stage.env
+src/configs/env/.production.env
 
 # OS
 .DS_Store
