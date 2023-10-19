@@ -10,9 +10,7 @@ import logConfig from './log.config';
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
-      // envFilePath: [`${__dirname}/env/.${process.env.NODE_ENV}.env`],
       envFilePath: `${__dirname}/env/.${process.env.NODE_ENV}.env`,
-      // envFilePath: `.${process.env.NODE_ENV}.env`,
       load: [appConfig, databaseConfig, authConfig, logConfig],
     }),
   ],

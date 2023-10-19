@@ -1,22 +1,23 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Generator: Indicates that you want to generate Prisma Client
+// Indicates that you want to generate Prisma Client
 generator client {
   provider = "prisma-client-js"
 }
 
-// Data source: Specifies your database connection (via an environment variable)
+// Specifies your database connection (via an environment variable)
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-// Data model: Defines your application models
+// Defines application models
 model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
   name  String?
+  password String
   posts Post[]
 }
 

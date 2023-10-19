@@ -3,7 +3,6 @@ import { registerAs } from '@nestjs/config';
 export enum AUTH_ENV {
   SECRET = 'auth.secret',
   EXPIRES = 'auth.expires',
-  HASH_ROUNDS = 'auth.hashRounds',
   BASE_URL = 'auth.baseUrl',
 }
 

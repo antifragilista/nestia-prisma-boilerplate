@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import databaseConfig from '../configs/database.config';
@@ -8,25 +8,59 @@ import { User } from "./entities/user.entity";
 
 @Injectable()
 export class UsersService {
-  // @Inject(databaseConfig.KEY) private dbConfig: ConfigType<typeof databaseConfig>,
   constructor(private readonly prismaService: PrismaService) {}
-  create(createUserDto: CreateUserDto): string {
-    return `This action create user`;
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const createdUser: User = await this.prismaService.user.create({
+        data: createUserDto
+    });
+
+    return createdUser;
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll(): Promise<User[]> {
+    return await this.prismaService.user.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    const user = await this.prismaService.user.findUnique({
+      where: { id },
+    });
+
+    if (!user) {
+      throw new NotFoundException(`User #${id} not found`);
+    }
+
+    return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    let userToUpdate: User;
+    try {
+      console.log(`id : ${id}`);
+      userToUpdate = await this.prismaService.user.update({
+        where: { id },
+        data: updateUserDto,
+      });
+      console.log(`userToUpdate : ${userToUpdate}`);
+    } catch (error) {
+      // 예외 처리: 없는 사용자 ID로 인한 Prisma 오류 등
+      throw new NotFoundException(`Error updating user #${id}: ${error.message}`);
+    }
+
+    return userToUpdate;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+    let deletedUser: User;
+    try {
+      deletedUser = await this.prismaService.user.delete({
+        where: { id },
+      });
+    } catch (error) {
+      // 예외 처리: 없는 사용자 ID로 인한 Prisma 오류 등
+      throw new NotFoundException(`Error deleting user #${id}: ${error.message}`);
+    }
+
+    return deletedUser;
   }
 }
