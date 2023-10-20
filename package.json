@@ -16,6 +16,7 @@
     "start:prod": "node dist/main",
     "prisma-gen": "npx prisma generate",
     "prisma-migrate": "dotenv -e ./src/configs/env/.development.env -- npx prisma migrate dev --name migration",
+    "prisma-migrate:reset": "dotenv -e ./src/configs/env/.development.env -- npx prisma migrate reset",
     "compose:dev:up": "docker-compose -f ./docker/docker-compose.dev.yml --env-file ./src/configs/env/.development.env up -d",
     "compose:dev:down": "docker-compose -f ./docker/docker-compose.dev.yml --env-file ./src/configs/env/.development.env down",
     "compose:dev:build": "docker-compose -f ./docker/docker-compose.dev.yml --env-file ./src/configs/env/.development.env build",
