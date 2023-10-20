@@ -1,66 +1,34 @@
-import { Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import databaseConfig from '../configs/database.config';
-import { ConfigType } from "@nestjs/config";
-import { PrismaService } from "../database/prisma/prisma.service";
 import { User } from "./entities/user.entity";
+import { UsersRepository } from "./users.repository";
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prismaService: PrismaService) {}
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    const createdUser: User = await this.prismaService.user.create({
-        data: createUserDto
-    });
-
+  constructor(private readonly userRepository: UsersRepository) {}
+  createUser(createUserDto: CreateUserDto) {
+    const createdUser = this.userRepository.create(createUserDto);
     return createdUser;
   }
 
-  async findAll(): Promise<User[]> {
-    return await this.prismaService.user.findMany();
+  findAllUsers(): Promise<User[]> {
+    const findedUsers = this.userRepository.findMany();
+    return findedUsers;
   }
 
-  async findOne(id: string) {
-    const user = await this.prismaService.user.findUnique({
-      where: { id },
-    });
-
-    if (!user) {
-      throw new NotFoundException(`User #${id} not found`);
-    }
-
-    return user;
+  findOneUser(id: string) {
+    const findedUser = this.userRepository.findOne(id);
+    return findedUser;
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    let userToUpdate: User;
-    try {
-      console.log(`id : ${id}`);
-      userToUpdate = await this.prismaService.user.update({
-        where: { id },
-        data: updateUserDto,
-      });
-      console.log(`userToUpdate : ${userToUpdate}`);
-    } catch (error) {
-      // 예외 처리: 없는 사용자 ID로 인한 Prisma 오류 등
-      throw new NotFoundException(`Error updating user #${id}: ${error.message}`);
-    }
-
-    return userToUpdate;
+  updateUser(id: string, updateUserDto: UpdateUserDto) {
+    const updatedUser = this.userRepository.update(id, updateUserDto);
+    return updatedUser;
   }
 
-  async remove(id: string) {
-    let deletedUser: User;
-    try {
-      deletedUser = await this.prismaService.user.delete({
-        where: { id },
-      });
-    } catch (error) {
-      // 예외 처리: 없는 사용자 ID로 인한 Prisma 오류 등
-      throw new NotFoundException(`Error deleting user #${id}: ${error.message}`);
-    }
-
+  deleteUser(id: string) {
+    const deletedUser = this.userRepository.doSoftDelete(id);
     return deletedUser;
   }
 }
