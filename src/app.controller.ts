@@ -7,6 +7,9 @@ export class AppController {
 
   @Get('health-check')
   getHello(): string {
+    console.log(process.env.NODE_ENV);
+    console.log(process.env.DATABASE_CONTAINER_NAME);
+    console.log(process.env.DATABASE_URL);
     return 'OK';
   }
 }

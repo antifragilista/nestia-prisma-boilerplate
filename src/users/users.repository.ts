@@ -17,7 +17,7 @@ export class UsersRepository {
     return await this.prismaService.user.findMany();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<User | null> {
     return await this.prismaService.user.findUnique({
       where: {
         id: id,
@@ -25,7 +25,7 @@ export class UsersRepository {
     });
   }
 
-  async update(id: string, inputData: Prisma.UserUpdateInput) {
+  async update(id: string, inputData: Prisma.UserUpdateInput): Promise<User> {
     return await this.prismaService.user.update({
       where: {
         id: id,
@@ -34,7 +34,7 @@ export class UsersRepository {
     });
   }
 
-  async doSoftDelete(id: string) {
+  async doSoftDelete(id: string): Promise<User> {
     return await this.prismaService.user.update({
       where: {
         id: id,

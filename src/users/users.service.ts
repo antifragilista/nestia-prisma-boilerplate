@@ -7,28 +7,28 @@ import { UsersRepository } from "./users.repository";
 @Injectable()
 export class UsersService {
   constructor(private readonly userRepository: UsersRepository) {}
-  createUser(createUserDto: CreateUserDto) {
-    const createdUser = this.userRepository.create(createUserDto);
+  createUser(createUserDto: CreateUserDto): Promise<User> {
+    const createdUser: Promise<User> = this.userRepository.create(createUserDto);
     return createdUser;
   }
 
   findAllUsers(): Promise<User[]> {
-    const findedUsers = this.userRepository.findMany();
+    const findedUsers: Promise<User[]> = this.userRepository.findMany();
     return findedUsers;
   }
 
-  findOneUser(id: string) {
-    const findedUser = this.userRepository.findOne(id);
+  findOneUser(id: string): Promise<User | null> {
+    const findedUser: Promise<User | null> = this.userRepository.findOne(id);
     return findedUser;
   }
 
-  updateUser(id: string, updateUserDto: UpdateUserDto) {
-    const updatedUser = this.userRepository.update(id, updateUserDto);
+  updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const updatedUser: Promise<User> = this.userRepository.update(id, updateUserDto);
     return updatedUser;
   }
 
-  deleteUser(id: string) {
-    const deletedUser = this.userRepository.doSoftDelete(id);
+  deleteUser(id: string): Promise<User> {
+    const deletedUser: Promise<User> = this.userRepository.doSoftDelete(id);
     return deletedUser;
   }
 }

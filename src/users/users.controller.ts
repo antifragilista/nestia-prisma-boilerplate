@@ -3,33 +3,47 @@ import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { User } from "./entities/user.entity";
+import { TypedBody, TypedParam, TypedRoute } from "@nestia/core";
+import { tags } from "typia";
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto): Promise<User> {
+  @TypedRoute.Post()
+  create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.createUser(createUserDto);
   }
 
-  @Get()
+  @TypedRoute.Get()
   findAll() {
     return this.usersService.findAllUsers();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @TypedRoute.Get(':id')
+  findOne(@TypedParam('id') id: string & tags.Format<'uuid'>) {
     return this.usersService.findOneUser(id);
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  /**
+   * Would not be shown.
+   *
+   * @internal
+   */
+  @TypedRoute.Patch(':id')
+  update(@TypedParam('id') id: string & tags.Format<'uuid'>,
+         @TypedBody() updateUserDto: UpdateUserDto) {
     return this.usersService.updateUser(id, updateUserDto);
   }
+  /**
+   *
+   * @param section Section code
+   * @param input Content to store
+   * @returns Newly archived article
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+   * @summary deprecated API
+   */
+  @TypedRoute.Delete(':id')
+  remove(@TypedParam('id') id: string & tags.Format<'uuid'>) {
     return this.usersService.deleteUser(id);
   }
 }
