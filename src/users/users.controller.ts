@@ -11,39 +11,29 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @TypedRoute.Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.createUser(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto) {
+    return await this.usersService.createUser(createUserDto);
   }
 
   @TypedRoute.Get()
-  findAll() {
-    return this.usersService.findAllUsers();
+  async findAll() {
+    return await this.usersService.findAllUsers();
   }
 
   @TypedRoute.Get(':id')
-  findOne(@TypedParam('id') id: string & tags.Format<'uuid'>) {
-    return this.usersService.findOneUser(id);
+  async findOne(@TypedParam('id') id: string & tags.Format<'uuid'>) {
+    return await this.usersService.findOneUser(id);
   }
-  /**
-   * Would not be shown.
-   *
-   * @internal
-   */
-  @TypedRoute.Patch(':id')
-  update(@TypedParam('id') id: string & tags.Format<'uuid'>,
-         @TypedBody() updateUserDto: UpdateUserDto) {
-    return this.usersService.updateUser(id, updateUserDto);
-  }
-  /**
-   *
-   * @param section Section code
-   * @param input Content to store
-   * @returns Newly archived article
 
-   * @summary deprecated API
-   */
+  @TypedRoute.Patch(':id')
+  async update(@TypedParam('id') id: string & tags.Format<'uuid'>,
+         @TypedBody() updateUserDto: UpdateUserDto) {
+    const result: User = await this.usersService.updateUser(id, updateUserDto);
+    return result;
+  }
+
   @TypedRoute.Delete(':id')
-  remove(@TypedParam('id') id: string & tags.Format<'uuid'>) {
-    return this.usersService.deleteUser(id);
+  async remove(@TypedParam('id') id: string & tags.Format<'uuid'>) {
+    return await this.usersService.deleteUser(id);
   }
 }

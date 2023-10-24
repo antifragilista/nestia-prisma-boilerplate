@@ -1,17 +1,28 @@
-export class CreateUserDto {
+export interface CreateUserDto {
   /**
+   * user email
+   *
    * @format email
    */
-  readonly email: string;
-  readonly name: string;
-  readonly nickname: string | null;
-  readonly password: string;
+  email: string;
+  /**
+   * User name.
+   *
+   * @pattern ^[a-z0-9]+$
+   * @maxLength 20
+   */
+  name: string;
+  /**
+   * User email
+   *
+   *
+   */
+  nickname: string | null;
+  /**
+   * User password
+   *
+   *
+   */
+  password: string;
 }
-
-// export interface CreateUserDto {
-//   readonly email: string;
-//   readonly name: string;
-//   readonly nickname: string | null;
-//   readonly password: string;
-// }
 
