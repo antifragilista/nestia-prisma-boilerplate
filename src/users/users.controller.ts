@@ -1,10 +1,9 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post } from "@nestjs/common";
-import { UsersService } from "./users.service";
-import { CreateUserDto } from "./dto/create-user.dto";
-import { UpdateUserDto } from "./dto/update-user.dto";
-import { User } from "./entities/user.entity";
-import { TypedBody, TypedParam, TypedRoute } from "@nestia/core";
-import { tags } from "typia";
+import { Body, Controller } from '@nestjs/common';
+import { UsersService } from './users.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { TypedBody, TypedParam, TypedRoute } from '@nestia/core';
+import { tags } from 'typia';
 
 @Controller('users')
 export class UsersController {
@@ -26,10 +25,11 @@ export class UsersController {
   }
 
   @TypedRoute.Patch(':id')
-  async update(@TypedParam('id') id: string & tags.Format<'uuid'>,
-         @TypedBody() updateUserDto: UpdateUserDto) {
-    const result: User = await this.usersService.updateUser(id, updateUserDto);
-    return result;
+  async update(
+    @TypedParam('id') id: string & tags.Format<'uuid'>,
+    @TypedBody() updateUserDto: UpdateUserDto,
+  ) {
+    return await this.usersService.updateUser(id, updateUserDto);
   }
 
   @TypedRoute.Delete(':id')
