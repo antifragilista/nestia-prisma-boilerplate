@@ -25,4 +25,3 @@ export interface CreateUserDto {
    */
   password: string;
 }
-
